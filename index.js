@@ -1,18 +1,26 @@
-import { error } from 'node:console';
-// import { cp } from 'node:fs';
-import { copyFile, constants, cp } from 'node:fs/promises';
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
-// try {
-//   await cp('https://s3-external-1.amazonaws.com/media.twiliocdn.com/AC74d1e6670b3a7682845dc75cc1bab147/3ef5decd231f5f51075175e4c4f17d55', 'destination.ogg');
-//   console.log('audio was copied to folder');
-// } catch {
-//   console.error('The file could not be copied', error);
-// }
+// URL of the file
+const fileUrl = 'https://s3-external-1.amazonaws.com/media.twiliocdn.com/AC74d1e6670b3a7682845dc75cc1bab147/3ef5decd231f5f51075175e4c4f17d55';
 
-// By using COPYFILE_EXCL, the operation will fail if destination.txt exists.
-try {
-  await copyFile('https://s3-external-1.amazonaws.com/media.twiliocdn.com/AC74d1e6670b3a7682845dc75cc1bab147/3ef5decd231f5f51075175e4c4f17d55', 'destination.ogg', constants.COPYFILE_EXCL);
-  console.log('source.txt was copied to destination.txt');
-} catch {
-  console.error('The file could not be copied', error);
-} 
+// Path where the file will be saved
+const filePath = path.join(__dirname, 'downloaded-file.mp3');
+
+// Function to download the file
+https.get(fileUrl, (response) => {
+    if (response.statusCode === 200) {
+        const fileStream = fs.createWriteStream(filePath);
+        response.pipe(fileStream);
+
+        fileStream.on('finish', () => {
+            fileStream.close();
+            console.log('Download completed successfully.');
+        });
+    } else {
+        console.log(`Failed to download file. Status Code: ${response.statusCode}`);
+    }
+}).on('error', (err) => {
+    console.error(`Error: ${err.message}`);
+});
