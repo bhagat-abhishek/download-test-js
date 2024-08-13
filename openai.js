@@ -7,8 +7,6 @@ const openai = new OpenAI({
   apiKey: process.env.API_KEY,
 });
 
-// file = path.join("downloadedfile.mp3");
-
 async function main() {
   const translation = await openai.audio.translations.create({
     file: fs.createReadStream("file.ogg"),
