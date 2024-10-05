@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // URL of the file
-const fileUrl = 'https://s3-external-1.amazonaws.com/media.twiliocdn.com/AC74d1e6670b3a7682845dc75cc1bab147/3ef5decd231f5f51075175e4c4f17d55';
+const fileUrl = 'https://s3-external-1.amazonaws.com/media.twiliocdn.com/AC74d1e6670b3a7682845dc75cc1bab147/4a459ddaed0f2b49ef4641515d241d13';
 
 // Path where the file will be saved
 const filePath = path.join(__dirname, 'file.ogg');
